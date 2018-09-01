@@ -12,7 +12,6 @@ public:
     DbMsgField();
     DbMsgField(const T &value);
 
-    T &getValue();
     const T &getValue() const;
     void setValue(const T &value);
 
@@ -36,12 +35,6 @@ DbMsgField<T>::DbMsgField(const T &value) :
     m_value(value)
 {
     setHasValue(true);
-}
-
-template<typename T>
-T &DbMsgField<T>::getValue()
-{
-    return m_value;
 }
 
 template<typename T>

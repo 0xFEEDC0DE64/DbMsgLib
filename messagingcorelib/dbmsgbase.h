@@ -8,6 +8,21 @@
 
 class DbMsgFieldBase;
 
+#define DECLARE_DBFIELD(TYPE, NAME, UPPER_NAME) \
+private: \
+    DbMsgField<TYPE> m_##NAME;\
+    \
+public: \
+    TYPE get##UPPER_NAME() const { return m_##NAME.getValue(); } \
+    void set##UPPER_NAME(const TYPE &NAME) { m_##NAME.setValue(NAME); } \
+    bool has##UPPER_NAME() const { return m_##NAME.hasValue(); } \
+    void clear##UPPER_NAME() { m_##NAME.clear(); } \
+    \
+    DbMsgField<TYPE> &NAME##Field() { return m_##NAME; } \
+    const DbMsgField<TYPE> &NAME##Field() const { return m_##NAME; } \
+    DbMsgFieldBase &NAME##FieldBase() { return m_##NAME; } \
+    const DbMsgFieldBase &NAME##FieldBase() const { return m_##NAME; }
+
 class MESSAGINGCORELIBSHARED_EXPORT DbMsgBase
 {
     static const QString m_clearedFieldsName;
