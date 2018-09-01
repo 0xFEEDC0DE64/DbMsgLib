@@ -4,6 +4,8 @@
 #include <QMap>
 #include <QString>
 
+class QJsonObject;
+
 class DbMsgFieldBase
 {
 public:
@@ -96,6 +98,12 @@ public:
     void setTouched(bool touched);
 
     void debug() const;
+
+    void copyTo(QJsonObject &jsonObject) const;
+    void copyTo(QVariantMap &variantMap) const;
+
+    void copyTouchedTo(QJsonObject &jsonObject) const;
+    void copyTouchedTo(QVariantMap &variantMap) const;
 
 protected:
     virtual QMap<QString, DbMsgFieldBase*> getFields() = 0;

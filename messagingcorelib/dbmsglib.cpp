@@ -1,6 +1,8 @@
 #include "dbmsglib.h"
 
 #include <QDebug>
+#include <QJsonObject>
+#include <QVariantMap>
 
 #include <algorithm>
 
@@ -48,4 +50,31 @@ void DbMsgBase::debug() const
     const auto fields = getFields();
     for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
         qDebug() << iter.key() << iter.value()->getVariant() << iter.value()->touched();
+}
+
+void DbMsgBase::copyTo(QJsonObject &jsonObject) const
+{
+    Q_UNUSED(jsonObject)
+    qCritical() << "has not been implemented for json yet";
+}
+
+void DbMsgBase::copyTo(QVariantMap &variantMap) const
+{
+    const auto fields = getFields();
+    for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
+        variantMap.insert(iter.key(), iter.value()->getVariant());
+}
+
+void DbMsgBase::copyTouchedTo(QJsonObject &jsonObject) const
+{
+    Q_UNUSED(jsonObject)
+    qCritical() << "has not been implemented for json yet";
+}
+
+void DbMsgBase::copyTouchedTo(QVariantMap &variantMap) const
+{
+    const auto fields = getFields();
+    for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
+        if(iter.value()->touched())
+            variantMap.insert(iter.key(), iter.value()->getVariant());
 }
