@@ -7,12 +7,22 @@
 #include <algorithm>
 
 DbMsgFieldBase::DbMsgFieldBase() :
-    m_touched(false)
+    m_hasValue(false), m_touched(false)
 {
 }
 
 DbMsgFieldBase::~DbMsgFieldBase()
 {
+}
+
+bool DbMsgFieldBase::hasValue() const
+{
+    return m_hasValue;
+}
+
+void DbMsgFieldBase::clear()
+{
+    m_hasValue = false;
 }
 
 bool DbMsgFieldBase::touched() const
@@ -24,6 +34,16 @@ void DbMsgFieldBase::setTouched(bool touched)
 {
     m_touched = touched;
 }
+
+void DbMsgFieldBase::setHasValue(bool hasValue)
+{
+    if(m_hasValue && !hasValue)
+        clear();
+    else
+        m_hasValue = hasValue;
+}
+
+const QString DbMsgBase::m_clearedFieldsName(QStringLiteral("__CLEARED_FIELDS"));
 
 DbMsgBase::DbMsgBase()
 {
@@ -62,7 +82,16 @@ void DbMsgBase::copyTo(QVariantMap &variantMap) const
 {
     const auto fields = getFields();
     for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
-        variantMap.insert(iter.key(), iter.value()->getVariant());
+    {
+        const auto key = iter.key();
+        const auto field = iter.value();
+        const auto hasValue = field->hasValue();
+        const auto variant = field->getVariant();
+        if(hasValue)
+            variantMap.insert(key, variant);
+        else
+            qWarning() << key << "has no value for full transmission!";
+    }
 }
 
 void DbMsgBase::copyTouchedTo(QJsonObject &jsonObject) const
@@ -73,8 +102,18 @@ void DbMsgBase::copyTouchedTo(QJsonObject &jsonObject) const
 
 void DbMsgBase::copyTouchedTo(QVariantMap &variantMap) const
 {
+    QStringList clearedFields;
+
     const auto fields = getFields();
     for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
         if(iter.value()->touched())
-            variantMap.insert(iter.key(), iter.value()->getVariant());
+        {
+            if(iter.value()->hasValue())
+                variantMap.insert(iter.key(), iter.value()->getVariant());
+            else
+                clearedFields.append(iter.key());
+        }
+
+    if(!clearedFields.isEmpty())
+        variantMap.insert(m_clearedFieldsName, clearedFields);
 }

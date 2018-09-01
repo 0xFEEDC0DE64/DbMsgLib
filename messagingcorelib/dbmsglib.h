@@ -12,12 +12,19 @@ public:
     DbMsgFieldBase();
     virtual ~DbMsgFieldBase();
 
+    bool hasValue() const;
+    virtual void clear();
+
     bool touched() const;
     void setTouched(bool touched);
 
     virtual QVariant getVariant() const = 0;
 
+protected:
+    void setHasValue(bool hasValue);
+
 private:
+    bool m_hasValue;
     bool m_touched;
 };
 
@@ -32,27 +39,25 @@ public:
     const T &getValue() const;
     void setValue(const T &value);
 
-    bool hasValue() const;
-
-    QVariant getVariant() const;
+    void clear() override;
+    QVariant getVariant() const override;
 
 private:
     T m_value;
-    bool m_hasValue;
 };
 
 template<typename T>
 DbMsgField<T>::DbMsgField() :
-    DbMsgFieldBase(),
-    m_hasValue(false)
+    DbMsgFieldBase()
 {
 }
 
 template<typename T>
 DbMsgField<T>::DbMsgField(const T &value) :
     DbMsgFieldBase(),
-    m_value(value), m_hasValue(true)
+    m_value(value)
 {
+    setHasValue(true);
 }
 
 template<typename T>
@@ -70,15 +75,16 @@ const T &DbMsgField<T>::getValue() const
 template<typename T>
 void DbMsgField<T>::setValue(const T &value)
 {
-    m_hasValue = true;
     m_value = value;
+    setHasValue(true);
     setTouched(true);
 }
 
 template<typename T>
-bool DbMsgField<T>::hasValue() const
+void DbMsgField<T>::clear()
 {
-    return m_hasValue;
+    DbMsgFieldBase::clear();
+    m_value = T();
 }
 
 template<typename T>
@@ -89,6 +95,8 @@ QVariant DbMsgField<T>::getVariant() const
 
 class DbMsgBase
 {
+    static const QString m_clearedFieldsName;
+
 public:
     DbMsgBase();
     virtual ~DbMsgBase();

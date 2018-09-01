@@ -13,6 +13,10 @@ int main(int argc, char **argv)
     message.copyTo(map);
     qDebug() << "full" << map;
 
+
+
+    qDebug() << "changing name...";
+
     message.setName("Peter");
 
     map.clear();
@@ -23,9 +27,15 @@ int main(int argc, char **argv)
     message.copyTouchedTo(map);
     qDebug() << "delta:" << map;
 
-    qDebug() << "clearing touched...";
 
-    message.setTouched(false);
+
+    qDebug() << "clearing name...";
+
+    message.nameField().clear();
+
+    map.clear();
+    message.copyTo(map);
+    qDebug() << "full" << map;
 
     map.clear();
     message.copyTouchedTo(map);
