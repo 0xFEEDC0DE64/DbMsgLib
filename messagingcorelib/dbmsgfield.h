@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QMetaType>
+
 #include "dbmsgfieldbase.h"
 #include "messagingcorelib_global.h"
 
@@ -16,6 +18,7 @@ public:
 
     void clear() override;
     QVariant toVariant() const override;
+    void setVariant(const QVariant &variant) override;
 
 private:
     T m_value;
@@ -66,4 +69,11 @@ template<typename T>
 QVariant DbMsgField<T>::toVariant() const
 {
     return getValue();
+}
+
+template<typename T>
+void DbMsgField<T>::setVariant(const QVariant &variant)
+{
+    Q_ASSERT(variant.type() == qMetaTypeId<T>());
+    m_value = variant.value<T>();
 }

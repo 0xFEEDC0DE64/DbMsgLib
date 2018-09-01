@@ -68,3 +68,33 @@ void DbMsgBase::copyTouchedTo(QVariantMap &variantMap) const
     if(!clearedFields.isEmpty())
         variantMap.insert(m_clearedFieldsName, clearedFields);
 }
+
+void DbMsgBase::apply(const QVariantMap &variantMap)
+{
+    const auto fields = getFields();
+    for(auto iter = variantMap.cbegin(); iter != variantMap.cend(); iter++)
+    {
+        if(iter.key() == m_clearedFieldsName)
+        {
+            Q_ASSERT(iter.value().type() == QVariant::StringList);
+            for(const auto &clearedField : iter.value().toStringList())
+            {
+                Q_ASSERT(fields.contains(clearedField));
+                const auto field = fields.value(clearedField);
+                if(field->touched())
+                    qWarning() << "delta message contained field which has been touched!";
+                field->clear();
+                field->setTouched(false);
+            }
+        }
+        else
+        {
+            Q_ASSERT(fields.contains(iter.key()));
+            const auto field = fields.value(iter.key());
+            if(field->touched())
+                qWarning() << "delta message contained field which has been touched!";
+            field->setVariant(iter.value());
+            field->setTouched(false);
+        }
+    }
+}

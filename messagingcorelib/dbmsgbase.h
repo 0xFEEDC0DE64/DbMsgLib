@@ -25,6 +25,8 @@ public:
     void copyTo(QVariantMap &variantMap) const;
     void copyTouchedTo(QVariantMap &variantMap) const;
 
+    void apply(const QVariantMap &variantMap);
+
 protected:
     virtual QMap<QString, DbMsgFieldBase*> getFields() = 0;
     virtual QMap<QString, const DbMsgFieldBase*> getFields() const = 0;

@@ -17,6 +17,7 @@ public:
     void setTouched(bool touched);
 
     virtual QVariant toVariant() const = 0;
+    virtual void setVariant(const QVariant &variant) = 0;
 
 protected:
     void setHasValue(bool hasValue);
