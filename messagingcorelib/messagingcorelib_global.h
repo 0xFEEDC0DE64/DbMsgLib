@@ -1,0 +1,9 @@
+#pragma once
+
+#include <QtGlobal>
+
+#if defined(MESSAGINGCORELIB_LIBRARY)
+#  define MESSAGINGCORELIBSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define MESSAGINGCORELIBSHARED_EXPORT Q_DECL_IMPORT
+#endif
