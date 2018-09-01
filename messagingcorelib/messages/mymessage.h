@@ -4,9 +4,13 @@
 #include <QDateTime>
 #include <QMap>
 
-#include "dbmsglib.h"
+#include "dbmsgbase.h"
+#include "messagingcorelib_global.h"
+#include "dbmsgfield.h"
 
-class MyMessage : public DbMsgBase
+class DbMsgFieldBase;
+
+class MESSAGINGCORELIBSHARED_EXPORT MyMessage : public DbMsgBase
 {
     typedef DbMsgFieldBase &(MyMessage::*FieldGetterMethod)();
     static const QMap<QString, FieldGetterMethod> m_fields;

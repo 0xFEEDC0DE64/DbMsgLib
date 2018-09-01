@@ -1,47 +1,10 @@
-#include "dbmsglib.h"
+#include "dbmsgbase.h"
 
 #include <QDebug>
-#include <QJsonObject>
-#include <QVariantMap>
 
 #include <algorithm>
 
-DbMsgFieldBase::DbMsgFieldBase() :
-    m_hasValue(false), m_touched(false)
-{
-}
-
-DbMsgFieldBase::~DbMsgFieldBase()
-{
-}
-
-bool DbMsgFieldBase::hasValue() const
-{
-    return m_hasValue;
-}
-
-void DbMsgFieldBase::clear()
-{
-    m_hasValue = false;
-}
-
-bool DbMsgFieldBase::touched() const
-{
-    return m_touched;
-}
-
-void DbMsgFieldBase::setTouched(bool touched)
-{
-    m_touched = touched;
-}
-
-void DbMsgFieldBase::setHasValue(bool hasValue)
-{
-    if(m_hasValue && !hasValue)
-        clear();
-    else
-        m_hasValue = hasValue;
-}
+#include "dbmsgfieldbase.h"
 
 const QString DbMsgBase::m_clearedFieldsName(QStringLiteral("__CLEARED_FIELDS"));
 
@@ -69,13 +32,7 @@ void DbMsgBase::debug() const
 {
     const auto fields = getFields();
     for(auto iter = fields.cbegin(); iter != fields.cend(); iter++)
-        qDebug() << iter.key() << iter.value()->getVariant() << iter.value()->touched();
-}
-
-void DbMsgBase::copyTo(QJsonObject &jsonObject) const
-{
-    Q_UNUSED(jsonObject)
-    qCritical() << "has not been implemented for json yet";
+        qDebug() << iter.key() << iter.value()->toVariant() << iter.value()->touched();
 }
 
 void DbMsgBase::copyTo(QVariantMap &variantMap) const
@@ -86,18 +43,12 @@ void DbMsgBase::copyTo(QVariantMap &variantMap) const
         const auto key = iter.key();
         const auto field = iter.value();
         const auto hasValue = field->hasValue();
-        const auto variant = field->getVariant();
+        const auto variant = field->toVariant();
         if(hasValue)
             variantMap.insert(key, variant);
         else
             qWarning() << key << "has no value for full transmission!";
     }
-}
-
-void DbMsgBase::copyTouchedTo(QJsonObject &jsonObject) const
-{
-    Q_UNUSED(jsonObject)
-    qCritical() << "has not been implemented for json yet";
 }
 
 void DbMsgBase::copyTouchedTo(QVariantMap &variantMap) const
@@ -109,7 +60,7 @@ void DbMsgBase::copyTouchedTo(QVariantMap &variantMap) const
         if(iter.value()->touched())
         {
             if(iter.value()->hasValue())
-                variantMap.insert(iter.key(), iter.value()->getVariant());
+                variantMap.insert(iter.key(), iter.value()->toVariant());
             else
                 clearedFields.append(iter.key());
         }

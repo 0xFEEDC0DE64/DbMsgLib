@@ -1,7 +1,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 
-#include "mymessage.h"
+#include "messages/mymessage.h"
 
 int main(int argc, char **argv)
 {
