@@ -13,15 +13,15 @@ private: \
     DbMsgField<TYPE> m_##NAME;\
     \
 public: \
-    TYPE get##UPPER_NAME() const { return m_##NAME.getValue(); } \
-    void set##UPPER_NAME(const TYPE &NAME) { m_##NAME.setValue(NAME); } \
-    bool has##UPPER_NAME() const { return m_##NAME.hasValue(); } \
-    void clear##UPPER_NAME() { m_##NAME.clear(); } \
+    inline TYPE get##UPPER_NAME() const { return m_##NAME.getValue(); } \
+    inline void set##UPPER_NAME(const TYPE &NAME) { m_##NAME.setValue(NAME); } \
+    inline bool has##UPPER_NAME() const { return m_##NAME.hasValue(); } \
+    inline void clear##UPPER_NAME() { m_##NAME.clear(); } \
     \
-    DbMsgField<TYPE> &NAME##Field() { return m_##NAME; } \
-    const DbMsgField<TYPE> &NAME##Field() const { return m_##NAME; } \
-    DbMsgFieldBase &NAME##FieldBase() { return m_##NAME; } \
-    const DbMsgFieldBase &NAME##FieldBase() const { return m_##NAME; }
+    inline DbMsgField<TYPE> &NAME##Field() { return m_##NAME; } \
+    inline const DbMsgField<TYPE> &NAME##Field() const { return m_##NAME; } \
+    inline DbMsgFieldBase &NAME##FieldBase() { return m_##NAME; } \
+    inline const DbMsgFieldBase &NAME##FieldBase() const { return m_##NAME; }
 
 class MESSAGINGCORELIBSHARED_EXPORT DbMsgBase
 {
@@ -32,7 +32,6 @@ public:
     virtual ~DbMsgBase();
 
     bool touched() const;
-
     void setTouched(bool touched);
 
     void debug() const;

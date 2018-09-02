@@ -2,7 +2,9 @@ TEMPLATE = subdirs
 
 SUBDIRS += messagingclient \
            messagingcorelib \
-           messagingserver
+           messagingserver \
+           messagingtest
 
 messagingclient.depends += messagingcorelib
 messagingserver.depends += messagingcorelib
+messagingtest.depends += messagingcorelib

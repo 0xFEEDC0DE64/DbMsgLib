@@ -1,7 +1,10 @@
-QT += core network
+QT += core testlib
+QT -= gui widgets
 
 TARGET = messagingserver
 TEMPLATE = app
+
+CONFIG += testcase
 
 PROJECT_ROOT = ..
 
@@ -9,7 +12,7 @@ DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin
 
 DBLIBS += core
 
-SOURCES += main.cpp
+SOURCES += tst_messagingtest.cpp
 
 HEADERS +=
 

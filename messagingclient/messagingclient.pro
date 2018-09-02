@@ -3,8 +3,6 @@ QT += core network
 TARGET = messagingclient
 TEMPLATE = app
 
-CONFIG -= app_bundle
-
 PROJECT_ROOT = ..
 
 DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin

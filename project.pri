@@ -1,8 +1,12 @@
-CONFIG += c++14
+CONFIG += qt console warn_on depend_includepath c++14
 
 DEFINES += QT_DEPRECATED_WARNINGS \
            QT_DISABLE_DEPRECATED_BEFORE=0x060000 \
            QT_MESSAGELOGCONTEXT
+
+equals(TEMPLATE, "app") {
+    CONFIG -= app_bundle
+}
 
 equals(TEMPLATE, "lib") {
     win32: DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin
