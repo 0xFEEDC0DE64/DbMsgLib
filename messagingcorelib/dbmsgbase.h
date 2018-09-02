@@ -5,23 +5,9 @@
 #include <QMap>
 
 #include "messagingcorelib_global.h"
+#include "dbmsgmacros.h"
 
 class DbMsgFieldBase;
-
-#define DECLARE_DBFIELD(TYPE, NAME, UPPER_NAME) \
-private: \
-    DbMsgField<TYPE> m_##NAME;\
-    \
-public: \
-    inline TYPE get##UPPER_NAME() const { return m_##NAME.getValue(); } \
-    inline void set##UPPER_NAME(const TYPE &NAME) { m_##NAME.setValue(NAME); } \
-    inline bool has##UPPER_NAME() const { return m_##NAME.hasValue(); } \
-    inline void clear##UPPER_NAME() { m_##NAME.clear(); } \
-    \
-    inline DbMsgField<TYPE> &NAME##Field() { return m_##NAME; } \
-    inline const DbMsgField<TYPE> &NAME##Field() const { return m_##NAME; } \
-    inline DbMsgFieldBase &NAME##FieldBase() { return m_##NAME; } \
-    inline const DbMsgFieldBase &NAME##FieldBase() const { return m_##NAME; }
 
 class MESSAGINGCORELIBSHARED_EXPORT DbMsgBase
 {

@@ -9,14 +9,16 @@ PROJECT_ROOT = ..
 DEFINES += MESSAGINGCORELIB_LIBRARY
 
 SOURCES += \
-    dbmsgfieldbase.cpp \
     dbmsgbase.cpp \
+    dbmsgfieldbase.cpp \
     messages/mymessage.cpp
 
-HEADERS += messagingcorelib_global.h \
-    dbmsgfieldbase.h \
-    dbmsgfield.h \
+HEADERS += \
     dbmsgbase.h \
+    dbmsgfield.h \
+    dbmsgfieldbase.h \
+    dbmsgmacros.h \
+    messagingcorelib_global.h \
     messages/mymessage.h
 
 FORMS +=

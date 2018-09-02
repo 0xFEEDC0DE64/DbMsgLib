@@ -1,4 +1,4 @@
-CONFIG += qt console warn_on depend_includepath c++14
+CONFIG += qt warn_on depend_includepath c++14
 
 DEFINES += QT_DEPRECATED_WARNINGS \
            QT_DISABLE_DEPRECATED_BEFORE=0x060000 \

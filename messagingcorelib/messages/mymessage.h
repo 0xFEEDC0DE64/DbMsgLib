@@ -12,11 +12,9 @@ class DbMsgFieldBase;
 
 class MESSAGINGCORELIBSHARED_EXPORT MyMessage : public DbMsgBase
 {
-    typedef DbMsgFieldBase &(MyMessage::*FieldGetterMethod)();
-    static const QMap<QString, FieldGetterMethod> m_fields;
+    DECLARE_DBMESSAGE(MyMessage)
 
 public:
-    MyMessage();
     MyMessage(const QString &name, const QDate &birthday, const QDateTime &sendTimestamp, int age, double weight);
 
     DECLARE_DBFIELD(QString, name, Name)
@@ -24,8 +22,4 @@ public:
     DECLARE_DBFIELD(QDateTime, sendTimestamp, SendTimestamp)
     DECLARE_DBFIELD(int, age, Age)
     DECLARE_DBFIELD(double, weight, Weight)
-
-protected:
-    QMap<QString, DbMsgFieldBase*> getFields() override;
-    QMap<QString, const DbMsgFieldBase*> getFields() const override;
 };
